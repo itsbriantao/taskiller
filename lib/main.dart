@@ -49,28 +49,26 @@ class _CheckboxesDemoState extends State<CheckboxesDemo> {
         centerTitle: true,
         backgroundColor: secondary,
       ),
-      body: Container( // TODO: change to ReorderableListView?
+      body: Container(
         margin: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-        child: ListView.builder(
-          itemCount: tasks.length,
-          itemBuilder: (context, index) {
-            final task = tasks[index];
-            return Dismissible(
-              key: new Key(task.checked.toString()+task.title+task.date+task.desc),
+        child: ReorderableListView(
+          children: [ for (var i = 0; i < tasks.length; i++)
+            Dismissible(
+              key: new Key(tasks[i].checked.toString()+tasks[i].title+tasks[i].date+tasks[i].desc),
               child: Row(
                 children: [
                   Checkbox(
-                    value: task.checked,
+                    value: tasks[i].checked,
                     onChanged: (bool val) {
-                      setState(() => task.checked = val);
+                      setState(() => tasks[i].checked = val);
                     },
                     activeColor: secondary,
                     checkColor: primary,
                   ),
                   Expanded(
                     child: ListTile(
-                      title: Text(task.title),
-                      subtitle: (task.date != '') ? Text(task.date) : null,
+                      title: Text(tasks[i].title),
+                      subtitle: (tasks[i].date != '') ? Text(tasks[i].date) : null,
                       onTap: () {
                         // TODO: open a Dialog for details where you can read the description and edit details: https://material.io/develop/flutter/components/dialogs
                       }
@@ -79,9 +77,9 @@ class _CheckboxesDemoState extends State<CheckboxesDemo> {
                 ]
               ),
               onDismissed: (direction) {
-                setState(() => tasks.removeAt(index));
+                setState(() => tasks.removeAt(tasks.indexOf(tasks[i])));
                 Scaffold.of(context).showSnackBar(
-                  SnackBar(content: Text('Deleted ${task.title}'))
+                  SnackBar(content: Text('Deleted ${tasks[i].title}'))
                 );
               },
               background: Container(
@@ -97,9 +95,16 @@ class _CheckboxesDemoState extends State<CheckboxesDemo> {
                 )
               ),
               direction: DismissDirection.endToStart,
-            );
-          },
-        ),
+            )
+          ],
+          onReorder: (int oldIndex, int newIndex) {
+            setState(() {
+              if (newIndex > oldIndex) newIndex -= 1;
+              final Task task = tasks.removeAt(oldIndex);
+              tasks.insert(newIndex, task);
+            });
+          }
+        )
       ),
       // backgroundColor: primary,
       floatingActionButton: FloatingActionButton(
