@@ -12,6 +12,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   final _formKey = GlobalKey<FormState>();
   String _title = '';
   String _priority;
+  String _tag;
   DateTime _date = DateTime.now();
   TextEditingController dateController = TextEditingController();
   final List<String> priorities = ['Low', 'Moderate', 'High'];
@@ -39,7 +40,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   _submit(){
     if(_formKey.currentState.validate()){
       _formKey.currentState.save();
-      print('$_title, $_date, $_priority');
+      print('$_title, $_date, $_priority, $_tag');
     }
   }
 
@@ -127,6 +128,20 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                         });
                       },
                       value: _priority,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 20.0),
+                    child: TextFormField(
+                      style: TextStyle(fontSize: 18.0),
+                      decoration: InputDecoration(
+                        labelText: 'Tag',
+                        labelStyle: TextStyle(fontSize: 18.0),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                      ),
+                      onSaved: (input) => _tag = input,
                     ),
                   ),
                   Container(
