@@ -1,4 +1,7 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
+import 'package:taskiller/AddTask.dart';
 import 'task.dart';
 
 void main() {
@@ -108,21 +111,18 @@ class _CheckboxesDemoState extends State<CheckboxesDemo> {
       ),
       // backgroundColor: primary,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // TODO: add a new task, maybe by opening a full-screen dialog? https://material.io/develop/flutter/components/dialogs
-          // Suggestion: A better option might be just to add a new task to the
-          //   screen and open the keyboard so they can immediately jot down a
-          //   quick to-do. Details such as date and description can be added as
-          //   edits if they want to by clicking on the task to open the details menu.
-          // IMPORTANT: when adding a new task, if the user doesn't give a date
-          //   then the date property should be an empty string: ''
-        },
-        child: Icon(
-          Icons.add,
-          color: primary,
-          size: 40.0,
-        ),
-        backgroundColor: secondary,
+          child: Icon(
+            Icons.add,
+            color: primary,
+            size: 40.0,
+          ),
+          backgroundColor: secondary,
+        onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (_) => AddTaskScreen()
+            ),
+          ), //direct to add
       ),
     );
   }
