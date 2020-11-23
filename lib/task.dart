@@ -4,7 +4,7 @@ class Task {
 
   bool checked;
   String title;
-  String date; // TODO: I think we should try giving the user a calendar to pick dates from
+  DateTime date; // TODO: I think we should try giving the user a calendar to pick dates from
   String desc;
 
   Task({this.checked, this.title, this.date, this.desc});
