@@ -1,12 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:taskiller/task.dart';
 
 class AddTaskScreen extends StatefulWidget {
+  List<Task> tasks;
+  AddTaskScreen({this.tasks});
   @override
-  _AddTaskScreenState createState() => _AddTaskScreenState();
+  _AddTaskScreenState createState() => _AddTaskScreenState(tasks:tasks);
 }
-
 
 class _AddTaskScreenState extends State<AddTaskScreen> {
   final _formKey = GlobalKey<FormState>();
@@ -16,6 +18,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   DateTime _date = DateTime.now();
   TextEditingController dateController = TextEditingController();
   final List<String> priorities = ['Low', 'Moderate', 'High'];
+  List<Task> tasks;
+
+  _AddTaskScreenState({this.tasks});
 
   Color primary = Color(0xFFD6BD8E),    // Keeping the same theme as Brian, can change
       secondary = Color(0xFF2B2E33);
@@ -41,6 +46,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     if(_formKey.currentState.validate()){
       _formKey.currentState.save();
       print('$_title, $_date, $_priority, $_tag');
+      tasks.add(new Task(checked: false, title: _title, date: _date, priority: _priority));
+      Navigator.pop(context);
     }
   }
 

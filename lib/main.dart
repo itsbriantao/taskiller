@@ -13,6 +13,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      routes: {'/home': (context) => CheckboxesDemo(), '/addTask': (context) =>AddTaskScreen(), },
       title: 'TasKiller',
       debugShowCheckedModeBanner: false,
       home: CheckboxesDemo(),
@@ -31,11 +32,11 @@ class _CheckboxesDemoState extends State<CheckboxesDemo> {
   // from there, but for now I just constructed 5 tasks inside the array
 
 List<Task> tasks = [
-    Task(checked: false, title: 'Task 1', date: DateTime(2020, 11, 9), desc: 'This is the first task'),
-    Task(checked: false, title: 'Task 2', date: DateTime(2020, 11, 8), desc: 'This is the second task'),
-    Task(checked: false, title: 'Task 3', date: DateTime(2020,11,7), desc: 'This is the third task'),
-    Task(checked: true, title: 'Task 4',date: DateTime(2020, 11, 6), desc: 'This is the fourth task'),
-    Task(checked: true, title: 'Task 5', date: DateTime(2020, 11, 5), desc: ''),
+     // Task(checked: false, title: 'Task 1', date: DateTime(2020, 11, 9), priority: 'Low'),
+    //  Task(checked: false, title: 'Task 2', date: DateTime(2020, 11, 8), desc: 'This is the second task'),
+    //  Task(checked: false, title: 'Task 3', date: DateTime(2020,11,7), desc: 'This is the third task'),
+    // Task(checked: true, title: 'Task 4',date: DateTime(2020, 11, 6), desc: 'This is the fourth task'),
+    // Task(checked: true, title: 'Task 5', date: DateTime(2020, 11, 5), desc: ''),
   ];
 
   bool asc = true;
@@ -85,7 +86,7 @@ Color primary = Color(0xFFD6BD8E),    // Brian: Just some styles because I got d
         child: ReorderableListView(
           children: [ for (var i = 0; i < tasks.length; i++)
             Dismissible(
-              key: new Key(tasks[i].checked.toString()+tasks[i].title+tasks[i].date.toString()+tasks[i].desc),
+              key: new Key(tasks[i].checked.toString()+tasks[i].title+tasks[i].date.toString()+tasks[i].priority),
               child: Row(
                 children: [
                   Checkbox(
@@ -98,7 +99,7 @@ Color primary = Color(0xFFD6BD8E),    // Brian: Just some styles because I got d
                   ),
                   Expanded(
                     child: ListTile(
-                      title: Text(tasks[i].title),
+                      title: (tasks[i].priority != null && tasks[i].priority != '') ? Text('${tasks[i].title} - ${tasks[i].priority}') : Text(tasks[i].title),
                       subtitle: (tasks[i].date != null && tasks[i].date != '')? Text(dateformatter.format(tasks[i].date)) : null,
                       onTap: () {
                         // TODO: open a Dialog for details where you can read the description and edit details: https://material.io/develop/flutter/components/dialogs
@@ -148,9 +149,11 @@ Color primary = Color(0xFFD6BD8E),    // Brian: Just some styles because I got d
         onPressed: () => Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (_) => AddTaskScreen()
+                builder: (_) => AddTaskScreen(tasks: tasks)
             ),
-          ), //direct to add
+          ).then((value) => setState((){
+
+        })), //direct to add
       ),
     );
   }

@@ -5,9 +5,9 @@ class Task {
   bool checked;
   String title;
   DateTime date; // TODO: I think we should try giving the user a calendar to pick dates from
-  String desc;
+  String priority;
 
-  Task({this.checked, this.title, this.date, this.desc});
+  Task({this.checked, this.title, this.date, this.priority});
 
   // Task.currentDateConstructor(bool checked, String title, String desc) {
   //   this.checked = checked;
